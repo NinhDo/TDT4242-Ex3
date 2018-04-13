@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class FactoryProjectTest extends TestCase {
@@ -20,10 +21,16 @@ public class FactoryProjectTest extends TestCase {
 		factoryProject = null;
 	}
 
-	public void testShouldHaveTenVehicles() {
+	public void testFactoryProject() {
+			factoryProject = new FactoryProject(new ArrayList(), new ArrayList(), new ArrayList<>());
+			assertNotNull(factoryProject);
+	}
+
+	public void testVehicleCount() {
 		for(int i = 0; i < 10; i++) {
 			Vehicle vehicle = new Vehicle();
 			factoryProject.addVehicle(vehicle);
+			assertEquals(i+1, factoryProject.getVehicleCount());
 		}
 		assertEquals(10, factoryProject.getVehicleCount());
 	}
@@ -32,6 +39,7 @@ public class FactoryProjectTest extends TestCase {
 		for(int i = 0; i < 10; i++) {
 			Software software = new Software();
 			factoryProject.addSoftware(software);
+			assertEquals(i+1, factoryProject.getSoftwareCount());
 		}
 		assertEquals(10, factoryProject.getSoftwareCount());
 	}
@@ -52,6 +60,7 @@ public class FactoryProjectTest extends TestCase {
 		for(int i = 0; i < 10; i++) {
 			SimpleEcu ecu = new SimpleEcu(i);
 			factoryProject.addEcu(ecu);
+			assertEquals(i+1, factoryProject.getEcuCount());
 		}
 		assertEquals(10, factoryProject.getEcuCount());
 	}
@@ -111,6 +120,7 @@ public class FactoryProjectTest extends TestCase {
 		factoryProject.addVehicle(secondVehicle);
 		factoryProject.addVehicle(thirdVehicle);
 		assertEquals(1, factoryProject.getVehicleIndex("second"));
+		assertEquals(-1, factoryProject.getVehicleIndex("fourth"));
 	}
 
 	public void testShouldGetCorrectIndexOfVehicle() {
@@ -177,7 +187,6 @@ public class FactoryProjectTest extends TestCase {
 	}
 
 	public void testRemoveVehicle() {
-
 		Vehicle vehicle = new Vehicle();
 		factoryProject.addVehicle(vehicle);
 		assertEquals(1, factoryProject.getVehicleCount());
@@ -189,6 +198,7 @@ public class FactoryProjectTest extends TestCase {
 		final JButton button = new JButton("For testing");
 		button.setEnabled(false);
 		PropertyChangeListener listener = evt -> button.setEnabled(true);
+		assertNotNull(listener);
 		factoryProject.addPropertyChangeListener(listener);
 		factoryProject.addVehicle(new Vehicle());
 		assertTrue(button.isEnabled());
@@ -198,6 +208,7 @@ public class FactoryProjectTest extends TestCase {
 		final JButton button = new JButton("For testing");
 		button.setEnabled(false);
 		PropertyChangeListener listener = evt -> button.setEnabled(!button.isEnabled());
+		assertNotNull(listener);
 		factoryProject.addPropertyChangeListener(listener);
 		factoryProject.addVehicle(new Vehicle()); // Should be true
 		factoryProject.removePropertyChangeListener(listener);
@@ -209,7 +220,9 @@ public class FactoryProjectTest extends TestCase {
 		Vehicle v = new Vehicle();
 		v.setVehicleID("oldId");
 		PropertyChangeListener listener = evt -> v.setVehicleID((String) evt.getNewValue());
+		assertNotNull(listener);
 		factoryProject.addPropertyChangeListener(listener);
+		assertEquals("oldId", v.getVehicleID());
 		factoryProject.propertyChange(new PropertyChangeEvent(this, "vehicleId", v.getVehicleID(), "newId"));
 		assertEquals("newId", v.getVehicleID());
 	}
@@ -222,21 +235,22 @@ public class FactoryProjectTest extends TestCase {
 		assertFalse(factoryProject.equals(otherFactoryProject));
 		assertTrue(factoryProject.equals(factoryProject));
 		assertFalse(factoryProject.equals(new Vehicle()));
-
 		assertTrue(factoryProject.equals(factoryProject));
+		otherFactoryProject.addVehicle(new Vehicle());
+		assertFalse(factoryProject.equals(otherFactoryProject));
+
+		factoryProject = new FactoryProject();
+		otherFactoryProject = new FactoryProject();
+		Vehicle v = new Vehicle();
+		factoryProject.addVehicle(v);
+		otherFactoryProject.addVehicle(v);
+		assertTrue(factoryProject.equals(otherFactoryProject));
 	}
 
 	public void testToString() {
 		Vehicle v1 = new Vehicle();
-		Vehicle v2 = new Vehicle();
-		Vehicle v3 = new Vehicle();
+		assertNotNull(v1);
 		factoryProject.addVehicle(v1);
-		factoryProject.addVehicle(v2);
-		factoryProject.addVehicle(v3);
-		assertEquals(factoryProject.toString(),
-				"project:\n" +
-						v1.toString() + "\n" +
-						v2.toString() + "\n" +
-						v3.toString() + "\n");
+		assertEquals(factoryProject.toString(), "project:\n" + v1.toString() + "\n");
 	}
 }
