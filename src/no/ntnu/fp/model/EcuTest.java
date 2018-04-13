@@ -33,14 +33,16 @@ public class EcuTest extends TestCase {
 		PropertyChangeListener listener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent event) {
-				button1.setEnabled(false);
+				button1.setEnabled(!button1.isEnabled());
 			};
 		};
 
 		ecu.addPropertyChangeListener(listener);
+		ecu.setSwId(2);
+		assert (!button1.isEnabled());
+		button1.setEnabled(true);
 		ecu.removePropertyChangeListener(listener);
 		ecu.setSwId(2);
-
 		assert (button1.isEnabled());
 	}
 
