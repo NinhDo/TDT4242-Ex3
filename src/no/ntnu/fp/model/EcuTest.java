@@ -1,14 +1,49 @@
 package no.ntnu.fp.model;
 
-import junit.framework.TestCase;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
+import javax.swing.JButton;
+
+import junit.framework.TestCase;
 
 public class EcuTest extends TestCase {
 
 	public void testAddPropertyChangeListener() {
+		Ecu ecu = new Ecu(1);
+		final JButton button1 = new JButton("for testing");
+
+		PropertyChangeListener listener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				button1.setEnabled(false);
+			};
+		};
+
+		ecu.addPropertyChangeListener(listener);
+		ecu.setSwId(2);
+
+		assert (!button1.isEnabled());
 	}
 
 	public void testRemovePropertyChangeListener() {
+		Ecu ecu = new Ecu(1);
+		final JButton button1 = new JButton("for testing");
+
+		PropertyChangeListener listener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				button1.setEnabled(!button1.isEnabled());
+			};
+		};
+
+		ecu.addPropertyChangeListener(listener);
+		ecu.setSwId(2);
+		assert (!button1.isEnabled());
+		button1.setEnabled(true);
+		ecu.removePropertyChangeListener(listener);
+		ecu.setSwId(2);
+		assert (button1.isEnabled());
 	}
 
 	public void testGetEcuId() {
@@ -45,6 +80,7 @@ public class EcuTest extends TestCase {
 
 	public void testIsNewest() {
 		Ecu ecu = new Ecu(1);
+		ecu.setNewest(true);
 		assertTrue(ecu.isNewest());
 	}
 
