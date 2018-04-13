@@ -2,10 +2,25 @@ package no.ntnu.fp.model;
 
 import junit.framework.TestCase;
 
-public class FactoryProjectTest extends TestCase {
+import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Iterator;
 
-	public void testGetVehicleCount() {
-		FactoryProject factoryProject = new FactoryProject();
+public class FactoryProjectTest extends TestCase {
+	private FactoryProject factoryProject;
+
+	public void setUp() {
+		System.out.println("Setting Up...");
+		factoryProject = new FactoryProject();
+	}
+
+	public void tearDown() {
+		System.out.println("Tearing Down...");
+		factoryProject = null;
+	}
+
+	public void testShouldHaveTenVehicles() {
 		for(int i = 0; i < 10; i++) {
 			Vehicle vehicle = new Vehicle();
 			factoryProject.addVehicle(vehicle);
@@ -13,8 +28,7 @@ public class FactoryProjectTest extends TestCase {
 		assertEquals(10, factoryProject.getVehicleCount());
 	}
 
-	public void testGetSoftwareCount() {
-		FactoryProject factoryProject = new FactoryProject();
+	public void testShouldHaveTenSoftwares() {
 		for(int i = 0; i < 10; i++) {
 			Software software = new Software();
 			factoryProject.addSoftware(software);
@@ -22,22 +36,19 @@ public class FactoryProjectTest extends TestCase {
 		assertEquals(10, factoryProject.getSoftwareCount());
 	}
 
-	public void testGetVehicle() {
-		FactoryProject factoryProject = new FactoryProject();
+	public void testShouldGetVehicle() {
 		Vehicle vehicle = new Vehicle();
 		factoryProject.addVehicle(vehicle);
 		assertEquals(vehicle, factoryProject.getVehicle(0));
 	}
 
-	public void testGetSoftware() {
-		FactoryProject factoryProject = new FactoryProject();
+	public void testShouldGetSoftware() {
 		Software software = new Software();
 		factoryProject.addSoftware(software);
 		assertEquals(software, factoryProject.getSoftware(0));
 	}
 
-	public void testGetEcuCount() {
-		FactoryProject factoryProject = new FactoryProject();
+	public void testShouldHaveTenEcus() {
 		for(int i = 0; i < 10; i++) {
 			SimpleEcu ecu = new SimpleEcu(i);
 			factoryProject.addEcu(ecu);
@@ -45,29 +56,31 @@ public class FactoryProjectTest extends TestCase {
 		assertEquals(10, factoryProject.getEcuCount());
 	}
 
-	public void testGetLatestSoftware() {
-		FactoryProject factoryProject = new FactoryProject();
-		Software software = new Software();
-		factoryProject.addSoftware(software);
-		assertEquals(software, factoryProject.getLatestSoftware());
+	public void testShouldGetLatestSoftware() {
+		Software oldSoftware = new Software();
+		Software newSoftware = new Software();
+		factoryProject.addSoftware(oldSoftware);
+		factoryProject.addSoftware(newSoftware);
+		assertEquals(newSoftware, factoryProject.getLatestSoftware());
 	}
 
-	public void testGetLatestVehicle() {
-		FactoryProject factoryProject = new FactoryProject();
-		Vehicle vehicle = new Vehicle();
-		factoryProject.addVehicle(vehicle);
-		assertEquals(vehicle, factoryProject.getLatestVehicle());
+	public void testShouldGetLatestVehicle() {
+		Vehicle oldVehicle = new Vehicle();
+		Vehicle newVehicle = new Vehicle();
+		factoryProject.addVehicle(oldVehicle);
+		factoryProject.addVehicle(newVehicle);
+		assertEquals(newVehicle, factoryProject.getLatestVehicle());
 	}
 
-	public void testGetLatestEcu() {
-		FactoryProject factoryProject = new FactoryProject();
-		SimpleEcu ecu = new SimpleEcu();
-		factoryProject.addEcu(ecu);
-		assertEquals(ecu, factoryProject.getLatestEcu());
+	public void testShouldGetLatestEcu() {
+		SimpleEcu oldEcu = new SimpleEcu();
+		SimpleEcu newEcu = new SimpleEcu();
+		factoryProject.addEcu(oldEcu);
+		factoryProject.addEcu(newEcu);
+		assertEquals(newEcu, factoryProject.getLatestEcu());
 	}
 
-	public void testGetSoftwareIndex() {
-		FactoryProject factoryProject = new FactoryProject();
+	public void testShouldGetCorrectSoftwareIndex() {
 		Software firstSoftware = new Software();
 		Software secondSoftware = new Software();
 		Software thirdSoftware = new Software();
@@ -77,8 +90,7 @@ public class FactoryProjectTest extends TestCase {
 		assertEquals(1, factoryProject.getSoftwareIndex(secondSoftware));
 	}
 
-	public void testGetEcu() {
-		FactoryProject factoryProject = new FactoryProject();
+	public void testShouldGetCorrectEcu() {
 		SimpleEcu firstEcu = new SimpleEcu();
 		SimpleEcu secondEcu = new SimpleEcu();
 		SimpleEcu thirdEcu = new SimpleEcu();
@@ -88,8 +100,7 @@ public class FactoryProjectTest extends TestCase {
 		assertEquals(secondEcu, factoryProject.getEcu(1));
 	}
 
-	public void testGetVehicleIndex() {
-		FactoryProject factoryProject = new FactoryProject();
+	public void testShouldGetCorrectVehicleIndex() {
 		Vehicle firstVehicle = new Vehicle();
 		firstVehicle.setVehicleID("first");
 		Vehicle secondVehicle = new Vehicle();
@@ -102,8 +113,7 @@ public class FactoryProjectTest extends TestCase {
 		assertEquals(1, factoryProject.getVehicleIndex("second"));
 	}
 
-	public void testIndexOf() {
-		FactoryProject factoryProject = new FactoryProject();
+	public void testShouldGetCorrectIndexOfVehicle() {
 		Vehicle firstVehicle = new Vehicle();
 		Vehicle secondVehicle = new Vehicle();
 		Vehicle thirdVehicle = new Vehicle();
@@ -113,26 +123,54 @@ public class FactoryProjectTest extends TestCase {
 		assertEquals(1, factoryProject.indexOf(secondVehicle));
 	}
 
-	public void testIterator() {
-
+	public void testIteratorShouldNotHaveHasNext() {
+		Iterator iterator = factoryProject.iterator();
+		assertFalse(iterator.hasNext());
 	}
 
+	public void testIteratorShouldNotHaveNext() {
+		Iterator iterator = factoryProject.iterator();
+		try {
+			iterator.next();
+			fail(); // Should not get here
+		} catch (Exception e) {
+			// Exception is expected.
+		}
+	}
+
+	public void testIteratorShouldHaveHasNext() {
+		Iterator iterator = factoryProject.iterator();
+		factoryProject.addVehicle(new Vehicle());
+		assertTrue(iterator.hasNext());
+		assertTrue(iterator.hasNext());
+		assertTrue(iterator.hasNext());
+	}
+
+	public void testIteratorShouldHaveNext() {
+		Vehicle vehicle = new Vehicle();
+		factoryProject.addVehicle(vehicle);
+		Iterator iterator = factoryProject.iterator();
+		try {
+			iterator.next();
+		} catch (Exception e) {
+			fail();
+		}
+	}
+
+
 	public void testAddVehicle() {
-		FactoryProject factoryProject = new FactoryProject();
 		Vehicle vehicle = new Vehicle();
 		factoryProject.addVehicle(vehicle);
 		assertEquals(1, factoryProject.getVehicleCount());
 	}
 
 	public void testAddSoftware() {
-		FactoryProject factoryProject = new FactoryProject();
 		Software software = new Software();
 		factoryProject.addSoftware(software);
 		assertEquals(1, factoryProject.getSoftwareCount());
 	}
 
 	public void testAddEcu() {
-		FactoryProject factoryProject = new FactoryProject();
 		SimpleEcu ecu = new SimpleEcu();
 		factoryProject.addEcu(ecu);
 		assertEquals(1, factoryProject.getEcuCount());
@@ -140,7 +178,6 @@ public class FactoryProjectTest extends TestCase {
 
 	public void testRemoveVehicle() {
 
-		FactoryProject factoryProject = new FactoryProject();
 		Vehicle vehicle = new Vehicle();
 		factoryProject.addVehicle(vehicle);
 		assertEquals(1, factoryProject.getVehicleCount());
@@ -149,17 +186,36 @@ public class FactoryProjectTest extends TestCase {
 	}
 
 	public void testAddPropertyChangeListener() {
+		final JButton button = new JButton("For testing");
+		button.setEnabled(false);
+		PropertyChangeListener listener = evt -> button.setEnabled(true);
+		factoryProject.addPropertyChangeListener(listener);
+		factoryProject.addVehicle(new Vehicle());
+		assertTrue(button.isEnabled());
 	}
 
 	public void testRemovePropertyChangeListener() {
+		final JButton button = new JButton("For testing");
+		button.setEnabled(false);
+		PropertyChangeListener listener = evt -> button.setEnabled(!button.isEnabled());
+		factoryProject.addPropertyChangeListener(listener);
+		factoryProject.addVehicle(new Vehicle()); // Should be true
+		factoryProject.removePropertyChangeListener(listener);
+		factoryProject.addVehicle(new Vehicle()); // If listener was still attached, it should be false.
+		assertTrue(button.isEnabled()); // Should still be true
 	}
 
 	public void testPropertyChange() {
+		Vehicle v = new Vehicle();
+		v.setVehicleID("oldId");
+		PropertyChangeListener listener = evt -> v.setVehicleID((String) evt.getNewValue());
+		factoryProject.addPropertyChangeListener(listener);
+		factoryProject.propertyChange(new PropertyChangeEvent(this, "vehicleId", v.getVehicleID(), "newId"));
+		assertEquals("newId", v.getVehicleID());
 	}
 
 	@SuppressWarnings({"SimplifiableJUnitAssertion", "EqualsWithItself", "EqualsBetweenInconvertibleTypes"})
 	public void testEquals() {
-		FactoryProject factoryProject = new FactoryProject();
 		FactoryProject otherFactoryProject = new FactoryProject();
 		factoryProject.addVehicle(new Vehicle());
 		otherFactoryProject.addVehicle(new Vehicle());
@@ -171,5 +227,16 @@ public class FactoryProjectTest extends TestCase {
 	}
 
 	public void testToString() {
+		Vehicle v1 = new Vehicle();
+		Vehicle v2 = new Vehicle();
+		Vehicle v3 = new Vehicle();
+		factoryProject.addVehicle(v1);
+		factoryProject.addVehicle(v2);
+		factoryProject.addVehicle(v3);
+		assertEquals(factoryProject.toString(),
+				"project:\n" +
+						v1.toString() + "\n" +
+						v2.toString() + "\n" +
+						v3.toString() + "\n");
 	}
 }
