@@ -1,24 +1,27 @@
 package no.ntnu.fp.model;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
-import javax.swing.JButton;
-
 import junit.framework.TestCase;
 
+import javax.swing.*;
+import java.beans.PropertyChangeListener;
+
 public class EcuTest extends TestCase {
+	private Ecu ecu;
+
+	public void setUp() {
+		System.out.println("Setting Up...");
+		ecu = new Ecu(1);
+	}
+
+	public void tearDown() {
+		System.out.println("Tearing Down...");
+		ecu = null;
+	}
 
 	public void testAddPropertyChangeListener() {
-		Ecu ecu = new Ecu(1);
 		final JButton button1 = new JButton("for testing");
 
-		PropertyChangeListener listener = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent event) {
-				button1.setEnabled(false);
-			};
-		};
+		PropertyChangeListener listener = event -> button1.setEnabled(false);
 
 		ecu.addPropertyChangeListener(listener);
 		ecu.setSwId(2);
@@ -27,15 +30,9 @@ public class EcuTest extends TestCase {
 	}
 
 	public void testRemovePropertyChangeListener() {
-		Ecu ecu = new Ecu(1);
 		final JButton button1 = new JButton("for testing");
 
-		PropertyChangeListener listener = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent event) {
-				button1.setEnabled(!button1.isEnabled());
-			};
-		};
+		PropertyChangeListener listener = event -> button1.setEnabled(!button1.isEnabled());
 
 		ecu.addPropertyChangeListener(listener);
 		ecu.setSwId(2);
@@ -47,18 +44,17 @@ public class EcuTest extends TestCase {
 	}
 
 	public void testGetEcuId() {
-		Ecu ecu = new Ecu(1);
 		assertEquals(1, ecu.getEcuId());
 	}
 
 	public void testSetEcuId() {
-		Ecu ecu = new Ecu(1);
 		ecu.setEcuId(2);
 		assertEquals(2, ecu.getEcuId());
 	}
 
 	public void testGetSwId() {
 		Ecu ecu = new Ecu(1, 1, 1);
+		assertNotNull(ecu);
 	}
 
 	public void testSetSwId() {
@@ -79,13 +75,11 @@ public class EcuTest extends TestCase {
 	}
 
 	public void testIsNewest() {
-		Ecu ecu = new Ecu(1);
 		ecu.setNewest(true);
 		assertTrue(ecu.isNewest());
 	}
 
 	public void testSetNewest() {
-		Ecu ecu = new Ecu(1);
 		ecu.setNewest(false);
 		assertFalse(ecu.isNewest());
 	}
