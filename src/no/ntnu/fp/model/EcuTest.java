@@ -78,6 +78,7 @@ public class EcuTest extends TestCase {
 
 	public void testIsNewest() {
 		Ecu ecu = new Ecu(1);
+		ecu.setNewest(true);
 		assertTrue(ecu.isNewest());
 	}
 
