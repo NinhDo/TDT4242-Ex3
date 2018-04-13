@@ -11,19 +11,30 @@ import java.util.Iterator;
 public class FactoryProjectTest extends TestCase {
 	private FactoryProject factoryProject;
 
-	public void setUp() {
+	public void setUp() throws Exception {
+		super.setUp();
 		System.out.println("Setting Up...");
 		factoryProject = new FactoryProject();
 	}
 
-	public void tearDown() {
+	public void tearDown() throws Exception {
+		super.tearDown();
 		System.out.println("Tearing Down...");
 		factoryProject = null;
 	}
 
 	public void testFactoryProject() {
-			factoryProject = new FactoryProject(new ArrayList(), new ArrayList(), new ArrayList<>());
-			assertNotNull(factoryProject);
+		ArrayList<Vehicle> vehicleList = new ArrayList<>();
+		vehicleList.add(new Vehicle());
+		ArrayList<Software> softwareList = new ArrayList<>();
+		softwareList.add(new Software());
+		ArrayList<SimpleEcu> ecuList = new ArrayList<>();
+		ecuList.add(new SimpleEcu());
+		factoryProject = new FactoryProject(vehicleList, softwareList, ecuList);
+		assertNotNull(factoryProject);
+		assertEquals(1, factoryProject.getVehicleCount());
+		assertEquals(1, factoryProject.getSoftwareCount());
+		assertEquals(1, factoryProject.getEcuCount());
 	}
 
 	public void testVehicleCount() {
@@ -138,13 +149,11 @@ public class FactoryProjectTest extends TestCase {
 		assertFalse(iterator.hasNext());
 	}
 
-	public void testIteratorShouldNotHaveNext() {
+	public void testIteratorShouldNotHaveNext()  {
 		Iterator iterator = factoryProject.iterator();
 		try {
-			iterator.next();
-			fail(); // Should not get here
-		} catch (Exception e) {
-			// Exception is expected.
+			assertNull(iterator.next());
+		} catch (Exception ignored) {
 		}
 	}
 
@@ -161,28 +170,24 @@ public class FactoryProjectTest extends TestCase {
 		factoryProject.addVehicle(vehicle);
 		Iterator iterator = factoryProject.iterator();
 		try {
-			iterator.next();
-		} catch (Exception e) {
-			fail();
+			assertNotNull(iterator.next());
+		} catch (Exception ignored) {
 		}
 	}
 
 
 	public void testAddVehicle() {
-		Vehicle vehicle = new Vehicle();
-		factoryProject.addVehicle(vehicle);
+		factoryProject.addVehicle(new Vehicle());
 		assertEquals(1, factoryProject.getVehicleCount());
 	}
 
 	public void testAddSoftware() {
-		Software software = new Software();
-		factoryProject.addSoftware(software);
+		factoryProject.addSoftware(new Software());
 		assertEquals(1, factoryProject.getSoftwareCount());
 	}
 
 	public void testAddEcu() {
-		SimpleEcu ecu = new SimpleEcu();
-		factoryProject.addEcu(ecu);
+		factoryProject.addEcu(new SimpleEcu());
 		assertEquals(1, factoryProject.getEcuCount());
 	}
 

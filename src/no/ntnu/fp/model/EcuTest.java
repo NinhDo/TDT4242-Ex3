@@ -8,12 +8,14 @@ import java.beans.PropertyChangeListener;
 public class EcuTest extends TestCase {
 	private Ecu ecu;
 
-	public void setUp() {
+	public void setUp() throws Exception{
+		super.setUp();
 		System.out.println("Setting Up...");
 		ecu = new Ecu(1);
 	}
 
-	public void tearDown() {
+	public void tearDown() throws Exception {
+		super.tearDown();
 		System.out.println("Tearing Down...");
 		ecu = null;
 	}

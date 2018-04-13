@@ -14,7 +14,8 @@ public class SimpleEcuTest extends TestCase {
 		ecu = new SimpleEcu();
 	}
 
-	public void tearDown() {
+	public void tearDown() throws Exception {
+		super.tearDown();
 		System.out.println("Tearing Down...");
 		ecu = null;
 	}
