@@ -94,21 +94,29 @@ public class PersonTest extends TestCase {
 	}
 
 	public void testEqualsObject() {
+		assert (guy.equals(guy));
+		assert (!guy.equals(true));
+
 		Person guy2 = new Person(2);
 		guy.setName("Juan");
 		guy.setEmail("email@email.com");
 		guy.setStreet("P. Sherman 42 Wallaby Way");
+		assert (!guy.equals(guy2));
+
 		guy2.setName("Juan");
+		assert (!guy.equals(guy2));
+
 		guy2.setEmail("email@email.com");
+		assert (!guy.equals(guy2));
+
 		guy2.setStreet("P. Sherman 42 Wallaby Way");
 		assert (guy.equals(guy2));
 	}
 
 	public void testToString() {
-		guy.setName("Juan");
-		guy.setEmail("email@email.com");
-		guy.setStreet("P. Sherman 42 Wallaby Way");
-		assertEquals(guy.toString(), "Name: Juan; Email: email@email.com; Street: P. Sherman 42 Wallaby Way");
+		Person guy2 = new Person(2, "Juan", "email@email.com", "P. Sherman 42 Wallaby Way", "Santiago", "FASCDF");
+
+		assertEquals(guy2.toString(), "Name: Juan; Email: email@email.com; Street: P. Sherman 42 Wallaby Way");
 	}
 
 	public void testGetCity() {
