@@ -2,7 +2,9 @@ package no.ntnu.fp.model;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import javax.swing.JButton;
+
 import junit.framework.TestCase;
 
 public class EcuTest extends TestCase {
@@ -25,6 +27,21 @@ public class EcuTest extends TestCase {
 	}
 
 	public void testRemovePropertyChangeListener() {
+		Ecu ecu = new Ecu(1);
+		final JButton button1 = new JButton("for testing");
+
+		PropertyChangeListener listener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				button1.setEnabled(false);
+			};
+		};
+
+		ecu.addPropertyChangeListener(listener);
+		ecu.removePropertyChangeListener(listener);
+		ecu.setSwId(2);
+
+		assert (button1.isEnabled());
 	}
 
 	public void testGetEcuId() {
