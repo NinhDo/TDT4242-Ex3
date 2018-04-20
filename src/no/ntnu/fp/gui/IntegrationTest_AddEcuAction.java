@@ -1,7 +1,7 @@
 package no.ntnu.fp.gui;
 
 import junit.framework.TestCase;
-it stimport no.ntnu.fp.model.Vehicle;
+import no.ntnu.fp.model.Vehicle;
 
 import java.awt.event.ActionEvent;
 
