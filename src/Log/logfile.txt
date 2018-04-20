@@ -1,0 +1,7 @@
+
+15:5:36.356      AbstractConnection                                                                                                                      Waiting for incoming packet in doReceive()        
+15:5:36.361      SendTimer                127.0.0.1:4001           localhost:5555           2854    SYN     -1                               0           Sending this datagram (try: 1)                    
+15:5:36.381      NETWORK                  127.0.0.1:4001           localhost:5555           2854    SYN     -1                               0           Packet sent.                                      
+15:5:36.406      AbstractConnection       localhost:50000          127.0.0.1:4001           5696    SYNACK  2854                             0           Processing packet.                                
+15:5:36.410      AbstractConnection       127.0.0.1:4001           localhost:50000          2855    ACK     5696                             0           Sending Ack: 5696                                 
+15:5:36.415      NETWORK                  127.0.0.1:4001           localhost:50000          2855    ACK     5696                             0           Packet sent.                                      
