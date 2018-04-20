@@ -78,9 +78,9 @@ public class SoftwareDbStorage extends FactoryDbStorage implements Storage {
 			maxSubFromDb = getBiggestSubId(swId);
 			if(!(subId == maxSubFromDb +1)){
 				subId = maxSubFromDb + 1;
-				message = "Software id allready in db and you entered a wrong sub id, it was changed to " +subId +" and added to db";
+				message = "Software id already in db and you entered a wrong sub id, it was changed to " +subId +" and added to db";
 				//sw.setMinorVersion(subId);
-				sp.getModel().setMinorVersion(subId);
+ 				sp.getModel().setMinorVersion(subId);
 				sp.updatePanel(null);
 				addNewMinorVersion(swId,url);
 				return message;
